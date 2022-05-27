@@ -10,7 +10,6 @@ fn main() {
     println!("The not so secret number has been generated as: {}", secret_number);
 
     let mut guess_count: i32 = 0;
-    let mut correct_guess = false;
     loop {
         println!("Please enter a number between 1 and 100: ");
 
@@ -18,7 +17,10 @@ fn main() {
 
         io::stdin().read_line(&mut guess).expect("Failed to read user input");
 
-        let guess: u32 = guess.trim().parse().expect("Please enter a number!");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue
+        };
 
         println!("You guessed {}", guess);
         guess_count += 1;
@@ -30,7 +32,6 @@ fn main() {
                 println!("Too big!"),
             Ordering::Equal => {
                 println!("Good Guess! You got it");
-                correct_guess = true;
                 break;
             }
             }
